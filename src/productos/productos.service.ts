@@ -25,4 +25,8 @@ export class ProductoService {
       .exec();
     return producto;
   }
+
+  async obtenerEnDescuento(): Promise<Producto[]> {
+    return this.productoModel.find({ enDescuento: true }).exec();
+  }
 }

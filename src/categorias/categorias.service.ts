@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Categoria, CategoriaDocument } from 'src/schemas/categorias.schema';
@@ -32,14 +32,17 @@ export class CategoriasService {
     return categoriasConProductos;
   }
 
-  async obtenerPorSlug(slug: string): Promise<any> {
+  async obtenerPorSlug(
+    slug: string,
+  ): Promise<{ categoria: Categoria; productos: Producto[] }> {
     const categoria = await this.categoriaModel.findOne({ slug }).exec();
-    if (!categoria) {
-      throw new NotFoundException(`Categoría con slug "${slug}" no encontrada`);
-    }
+    console.log(categoria._id);
+
+    const categoriaString = categoria._id.toString();
+
     const productos = await this.productoModel
-      .find({ categoria: categoria._id })
+      .find({ categoria: categoriaString })
       .exec();
-    return { ...categoria.toObject(), productos };
+    return { categoria, productos };
   }
 }

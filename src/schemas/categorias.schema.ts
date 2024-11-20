@@ -5,7 +5,7 @@ export type CategoriaDocument = Categoria & Document;
 
 @Schema()
 export class Categoria {
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   slug: string;
 
   @Prop({ required: true })
